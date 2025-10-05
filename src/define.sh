@@ -197,6 +197,13 @@ getURL() {
         version=$(echo "$body" | jq -r '.entries | .[] | select(.status=="Current Stable Release").version')
         url="https://cdimages.ubuntu.com/xubuntu/releases/${version}/release/xubuntu-${version}-desktop-amd64.iso"
       fi ;;
+    "ghostbsd" )
+      name="Ghostbsd(Freebsd)"
+      if [[ "$ret" == "url" ]]; then
+        body=$(pipe "https://ghostbsd.org/rss.xml") || exit 65
+        version=$(echo "$body" |grep Now|grep \<title\>|awk '{print $2'}| head -n 1)
+        url="https://download.ghostbsd.org/releases/amd64/${version}/GhostBSD-${version}-XFCE.iso"
+      fi ;;
   esac
 
   case "${ret,,}" in
